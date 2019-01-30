@@ -1,0 +1,108 @@
+Redis Notes
+
+Redis, which stands for REmote DIctionary Server
+ Redis developers can leverage data structures like 
+ strings, hashes, lists, sets, and sorted sets 
+ using commands similar to the collection operations in most programming languages. 
+ Redis has replication capabilities, a server-side scripting language (Lua), 
+ transactions, and different modes of disk persistence.
+
+
+https://hub.docker.com/_/redis
+
+docker pull redis
+
+default port 6379
+
+to connect via GUI on port 6379
+ docker run -p 127.0.0.1:6379:6379 --name some-redis -d redis redis-server --appendonly yes
+
+if image already configured then 
+ docker start some-redis
+
+connect via cli
+ docker exec -it some-redis /bin/bash
+ redis-cli
+
+Test
+ping
+
+Set key value pair 
+ SET 7wks http://www.sevenweeks.org/
+
+ Get key value
+  GET 7wks
+
+ Setting multiple key value pairs
+  MSET gog http://www.google.com yah http://www.yahoo.com
+
+  Getting multiple key value pairs
+   MGET gog yah
+
+  Setting integer in variable
+   SET count 2
+  increment
+   INCR count
+   INCRBY count 2
+  decrement
+   DECR count
+   DECRBY count 2
+  get value after increment
+   GET count
+
+TRANSACTIONS
+
+ MULTI
+  SET prag http://pragprog.com
+  INCR count
+ EXEC
+Commands are queued and then executed in sequence on EXEC
+
+Hashes
+ unique identifier that links to a key:value pair map
+  HMSET user:luc name "Luc" password s3cret
+ here "user:luc" is unique name that will store name and password key value pair map
+ 
+ To get all values inside the map linked to hash name "user:luc"
+  HVALS user:luc
+ To get all keys inside the map linked to hash name "user:luc"
+  HKEYS user:luc
+ To get a specific key value inside hash "user:luc"
+  HGET user:luc password
+
+Lists
+ Lists can be used as both queue and stack
+
+ use RPUSH to insert
+  RPUSH eric:wishlist 7wks gog prag
+
+ LRANGE to retrive list data
+  zero based index
+  use -1 to get all (-1 is used to scan from end)
+  use -2 to get all minus 1 (from end)
+  LRANGE eric:wishlist 0 -1
+
+ LREM to remove
+  0 means all occurances
+  1 means only one occurance
+  -1 means only one occurance from end
+  LREM eric:wishlist 0 gog
+
+  LPOP To remove values in the order they were inserted (queue)
+   LPOP eric:wishlist
+
+   LPUSH and LPOP To add and remove values in Last in first out fashion (stack)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
